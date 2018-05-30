@@ -508,8 +508,8 @@ class PureChat extends PluginBase
 	{
 		$originalChatFormat = $this->getOriginalChatFormat($player, $levelName);
 
-		$chatFormat = $this->applyColors($originalChatFormat);
 		$chatFormat = $this->applyPCTags($chatFormat, $player, $message, $levelName);
+		$chatFormat = $this->applyColors($originalChatFormat);
 
 		return $chatFormat;
 	}
