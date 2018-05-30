@@ -1,7 +1,10 @@
 <?php
 namespace _64FF00\PureChat\factions;
 use pocketmine\Player;
-interface FactionsInterface
+use factions\FactionsPE as FPE;
+use factions\engine\ChatEngine;
+use factions\manager\Members;
+class FactionsPE implements FactionsInterface
 {
     /*
         PureChat by 64FF00 (Twitter: @64FF00)
@@ -14,8 +17,29 @@ interface FactionsInterface
           888  888   Y88b  d88P       888  888        888       Y88b  d88P Y88b  d88P
           888  888    "Y8888P"        888  888        888        "Y8888P"   "Y8888P"
     */
-    public function hasFaction(Player $player) : bool;
-    public function getAPI();
-    public function getPlayerFaction(Player $player);
-    public function getPlayerRank(Player $player);
+    /**
+     * @return FPE|null
+     */
+    public function getAPI() {
+    	return FPE::get();
+    }
+    public function hasFaction(Player $player) : bool {
+    	return Members::get($player)->hasFaction();
+    }
+    /**
+     * @return Faction|null
+     */
+    public function getPlayerFaction(Player $player) {
+    	$member = Members::get($player);
+    	if($member->hasFaction()) {
+    		return $member->getFaction()->getName();
+    	}
+    	return null;
+    }
+    /**
+     * @return string
+     */
+    public function getPlayerRank(Player $player) {
+    	return ChatEngine::getBadge(Members::get($player)->getRole());
+    }
 }

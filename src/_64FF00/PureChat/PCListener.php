@@ -71,8 +71,7 @@ class PCListener implements Listener
      */
     public function onPlayerChat(PlayerChatEvent $event)
     {
-		if ($event->isCancelled()) return;
-		$player = $event->getPlayer();
+        $player = $event->getPlayer();
         $message = $event->getMessage();
 
         $levelName = $this->plugin->getConfig()->get("enable-multiworld-chat") ? $player->getLevel()->getName() : null;
