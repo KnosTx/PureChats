@@ -66,6 +66,7 @@ class PureChat extends PluginBase
     public function onEnable()
     {
         $this->loadFactionsPlugin();
+        $this->loadClanPlugin();
 
         $this->getServer()->getPluginManager()->registerEvents(new PCListener($this), $this);
     }
@@ -389,6 +390,44 @@ class PureChat extends PluginBase
                 default:
 
                     $this->getLogger()->notice("No valid factions plugin in default-factions-plugin node was found. Disabling factions plugin support.");
+
+                    break;
+            }
+        }
+    }
+    
+    private function loadClanPlugin()
+    {
+        $clanPluginName = $this->config->get("clan-plugin");
+
+        if($clanPluginName === null)
+        {
+            $this->getLogger()->notice("No valid clan plugin in clan-plugin node was found. Disabling clan plugin support.");
+        }
+        else
+        {
+            switch(strtolower($clanPluginName))
+            {
+                case "BedrockClans":
+
+                    $BC = $this->getServer()->getPluginManager()->getPlugin("BedrockClans");
+
+                    if($BC !== null)
+                    {
+                            $this->clanAPI = new BedrockClans();
+
+                            $this->getLogger()->notice("BedrockClans support enabled.");
+
+                            break;
+                        }
+
+                    $this->getLogger()->notice("No valid clan plugin in clan-plugin node was found. Disabling clan plugin support.");
+
+                    break;
+
+                default:
+
+                    $this->getLogger()->notice("No valid clan plugin in clan-plugin node was found. Disabling clan plugin support.");
 
                     break;
             }
