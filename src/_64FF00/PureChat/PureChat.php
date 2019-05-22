@@ -3,8 +3,10 @@
 namespace _64FF00\PureChat;
 
 use _64FF00\PureChat\factions\FactionsInterface;
+use _64FF00\PureChat\factions\ClansInterface;
 use _64FF00\PureChat\factions\FactionsProNew;
 use _64FF00\PureChat\factions\FactionsProOld;
+use _64FF00\PureChat\factions\BedrockClans;
 use _64FF00\PureChat\factions\XeviousPE_Factions;
 
 use _64FF00\PurePerms\PPGroup;
@@ -41,6 +43,8 @@ class PureChat extends PluginBase
 
     /** @var FactionsInterface $factionsAPI */
     private $factionsAPI;
+    /** @var ClansInterface $clanAPI */
+    private $clanAPI;
 
     /** @var \_64FF00\PurePerms\PurePerms $purePerms */
     private $purePerms;
@@ -400,7 +404,7 @@ class PureChat extends PluginBase
     {
         $clanPluginName = $this->config->get("clan-plugin");
 
-        if($clanPluginName === null)
+        if(!isset($clanPluginName))
         {
             $this->getLogger()->notice("No valid clan plugin in clan-plugin node was found. Disabling clan plugin support.");
         }
@@ -408,7 +412,7 @@ class PureChat extends PluginBase
         {
             switch(strtolower($clanPluginName))
             {
-                case "BedrockClans":
+                case "bedrockclans":
 
                     $BC = $this->getServer()->getPluginManager()->getPlugin("BedrockClans");
 
@@ -428,8 +432,6 @@ class PureChat extends PluginBase
                 default:
 
                     $this->getLogger()->notice("No valid clan plugin in clan-plugin node was found. Disabling clan plugin support.");
-
-                    break;
             }
         }
     }
@@ -510,6 +512,19 @@ class PureChat extends PluginBase
         {
             $string = str_replace("{fac_name}", '', $string);
             $string = str_replace("{fac_rank}", '', $string);
+        }
+
+        if($this->clanAPI !== null)
+        {
+            $ctags = explode("{clanname}", $this->config->get("clan-tags") ?? "[{clanname}]");
+            $string = str_replace("{clan_name}", $ctags[0].$this->clanAPI->getPlayerClan($player).$ctags[1], $string);
+            $string = str_replace("{clan_rank}", $this->clanAPI->getPlayerRank($player), $string);
+        }
+        else
+        {
+            $string = str_replace("{clan_name}", '', $string);
+            $string = str_replace("{clan_rank}", '', $string);
+            $string = str_replace("{clan_tags}", '', $string);
         }
 
         $string = str_replace("{world}", ($levelName === null ? "" : $levelName), $string);
