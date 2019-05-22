@@ -13,7 +13,7 @@ default-factions-plugin: FactionsPro
 
 #Set the clan plugin, wich is used for PureChat
 # BedrockClans is the only one, wich works with PureChat yet
-clan plugin: BedrockClans
+clan-plugin: BedrockClans
 
 # Enable this if you want to use per-world chat formats / per-world nametags for players
 # - true / false
