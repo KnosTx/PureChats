@@ -35,7 +35,7 @@ class BedrockClans implements ClansInterface
      */
     public function getPlayerClan(Player $player)
     {
-        return $this->getAPI()->getClan($player->getName());
+        return $this->getAPI()->getPlayer($player) === null ? "NoClan" : $this->getAPI()->getPlayer($player)->getClan()->getName();
     }
 
     /**
