@@ -516,8 +516,8 @@ class PureChat extends PluginBase
 
         if($this->clanAPI !== null)
         {
-            $string = str_replace("{clan_name}", $this->clanAPI->getClan($player->getName()), $string);
-            $string = str_replace("{clan_rank}", $this->clanAPI->getPlayer($player)->isLeader(), $string);
+            $string = str_replace("{clan_name}", $this->clanAPI->getPlayerClan($player), $string);
+            $string = str_replace("{clan_rank}", $this->clanAPI->getPlayerRank($player), $string);
         }
         else
         {
