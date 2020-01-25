@@ -59,4 +59,3 @@ class BedrockClans implements ClansInterface
         return '';
     }
 }
-
