@@ -1,4 +1,3 @@
-
 <?php
 
 namespace _64FF00\PureChat\factions;
