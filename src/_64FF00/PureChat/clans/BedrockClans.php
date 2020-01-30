@@ -34,7 +34,7 @@ class BedrockClans implements ClansInterface
      */
     public function getPlayerClan(Player $player)
     {
-        return $this->getAPI()->getPlayer($player) === null ? "No clan" : $this->getAPI()->getPlayer($player)->getClan()->getName();
+        return $this->getAPI()->getPlayer($player) === null ? "" : $this->getAPI()->getPlayer($player)->getClan()->getName();
     }
 
     /**
@@ -54,6 +54,6 @@ class BedrockClans implements ClansInterface
                 return 'Member';
             }
         }
-        return 'No clan';
+        return '';
     }
 }
