@@ -6,7 +6,7 @@ use _64FF00\PureChat\factions\FactionsInterface;
 use _64FF00\PureChat\factions\ClansInterface;
 use _64FF00\PureChat\factions\FactionsProNew;
 use _64FF00\PureChat\factions\FactionsProOld;
-use _64FF00\PureChat\factions\BedrockClans;
+use _64FF00\PureChat\clans\BedrockClans;
 use _64FF00\PureChat\factions\XeviousPE_Factions;
 
 use _64FF00\PurePerms\PPGroup;
