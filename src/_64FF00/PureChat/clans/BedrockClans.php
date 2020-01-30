@@ -1,6 +1,6 @@
 <?php
 
-namespace _64FF00\PureChat\factions;
+namespace _64FF00\PureChat\clans;
 
 use pocketmine\Player;
 use pocketmine\Server;
