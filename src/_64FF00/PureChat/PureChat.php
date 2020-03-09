@@ -523,7 +523,6 @@ class PureChat extends PluginBase
         {
             $string = str_replace("{clan_name}", '', $string);
             $string = str_replace("{clan_rank}", '', $string);
-            $string = str_replace("{clan_tags}", '', $string);
         }
 
         $string = str_replace("{world}", ($levelName === null ? "" : $levelName), $string);
