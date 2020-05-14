@@ -402,9 +402,9 @@ class PureChat extends PluginBase
     
     private function loadClanPlugin()
     {
-        $clanPluginName = $this->config->get("clan-plugin");
+        $clanPluginName = $this->config->get("clan-plugin", null);
 
-        if(!isset($clanPluginName))
+        if(is_null($clanPluginName))
         {
             $this->getLogger()->notice("No valid clan plugin in clan-plugin node was found. Disabling clan plugin support.");
         }
@@ -423,7 +423,7 @@ class PureChat extends PluginBase
                             $this->getLogger()->notice("BedrockClans support enabled.");
 
                             break;
-                        }
+                     }
 
                     $this->getLogger()->notice("No valid clan plugin in clan-plugin node was found. Disabling clan plugin support.");
 
