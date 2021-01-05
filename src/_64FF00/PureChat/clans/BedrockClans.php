@@ -43,6 +43,6 @@ class BedrockClans implements ClansInterface
      */
     public function getPlayerRank(Player $player)
     {
-        return is_null($this->getAPI()->getPlayer($player)->getClan()) ? '' : $this->getAPI()->getPlayer($player)->isLeader() ? 'Leader' : 'Member';
+        return is_null($this->getAPI()->getPlayer($player)->getClan()) ? '' : ($this->getAPI()->getPlayer($player)->isLeader() ? 'Leader' : 'Member');
     }
 }
