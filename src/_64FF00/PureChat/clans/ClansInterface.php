@@ -21,7 +21,9 @@ interface ClansInterface
 
     public function getAPI();
 
-    public function getPlayerClan(Player $player);
+    public function getPlayerClanName(Player $player);
+
+    public function getPlayerClanDisplayName(Player $player);
 
     public function getPlayerRank(Player $player);
 }
