@@ -2,7 +2,7 @@
 
 namespace _64FF00\PureChat\factions;
 
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 interface FactionsInterface
 {

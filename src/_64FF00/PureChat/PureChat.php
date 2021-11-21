@@ -6,18 +6,14 @@ use _64FF00\PureChat\factions\FactionsInterface;
 use _64FF00\PureChat\factions\FactionsProNew;
 use _64FF00\PureChat\factions\FactionsProOld;
 use _64FF00\PureChat\factions\XeviousPE_Factions;
-
 use _64FF00\PurePerms\PPGroup;
-
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-
-use pocketmine\Player;
-
+use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
-
 use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat;
+use pocketmine\world\World;
 
 class PureChat extends PluginBase
 {
@@ -45,7 +41,7 @@ class PureChat extends PluginBase
     /** @var \_64FF00\PurePerms\PurePerms $purePerms */
     private $purePerms;
 
-    public function onLoad()
+    public function onLoad(): void
     {
         $this->saveDefaultConfig();
 
@@ -63,7 +59,7 @@ class PureChat extends PluginBase
         $this->purePerms = $this->getServer()->getPluginManager()->getPlugin("PurePerms");
     }
     
-    public function onEnable()
+    public function onEnable(): void
     {
         $this->loadFactionsPlugin();
 
@@ -101,8 +97,8 @@ class PureChat extends PluginBase
 
                 if($args[1] !== "null" and $args[1] !== "global")
                 {
-                    /** @var \pocketmine\level\Level $level */
-                    $level = $this->getServer()->getLevelByName($args[1]);
+                    /** @var World $level */
+                    $level = $this->getServer()->getWorldManager()->getWorldByName($args[1]);
 
                     if ($level === null) {
                         $sender->sendMessage(TextFormat::RED . self::MAIN_PREFIX . " Invalid World Name!");
@@ -110,7 +106,7 @@ class PureChat extends PluginBase
                         return true;
                     }
 
-                    $levelName = $level->getName();
+                    $levelName = $level->getDisplayName();
                 }
 
                 $chatFormat = implode(" ", array_slice($args, 2));
@@ -143,8 +139,8 @@ class PureChat extends PluginBase
 
                 if($args[1] !== "null" and $args[1] !== "global")
                 {
-                    /** @var \pocketmine\level\Level $level */
-                    $level = $this->getServer()->getLevelByName($args[1]);
+                    /** @var World $level */
+                    $level = $this->getServer()->getWorldManager()->getWorldByName($args[1]);
 
                     if ($level === null) {
                         $sender->sendMessage(TextFormat::RED . self::MAIN_PREFIX . " Invalid World Name!");
@@ -152,7 +148,7 @@ class PureChat extends PluginBase
                         return true;
                     }
 
-                    $levelName = $level->getName();
+                    $levelName = $level->getDisplayName();
                 }
 
                 $nameTag = implode(" ", array_slice($args, 2));
@@ -180,7 +176,7 @@ class PureChat extends PluginBase
                     return true;
                 }
 
-                $levelName = $this->config->get("enable-multiworld-chat") ? $sender->getLevel()->getName() : null;
+                $levelName = $this->config->get("enable-multiworld-chat") ? $sender->getWorld()->getDisplayName() : null;
 
                 $prefix = str_replace("{BLANK}", ' ', implode('', $args));
 
@@ -206,7 +202,7 @@ class PureChat extends PluginBase
                     return true;
                 }
 
-                $levelName = $this->config->get("enable-multiworld-chat") ? $sender->getLevel()->getName() : null;
+                $levelName = $this->config->get("enable-multiworld-chat") ? $sender->getWorld()->getDisplayName() : null;
 
                 $suffix = str_replace("{BLANK}", ' ', implode('', $args));
 

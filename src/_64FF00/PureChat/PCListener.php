@@ -8,7 +8,8 @@ use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 
-use pocketmine\Player;
+use pocketmine\player\IPlayer;
+use pocketmine\player\Player;
 
 class PCListener implements Listener
 {
@@ -37,12 +38,12 @@ class PCListener implements Listener
 
     public function onGroupChanged(PPGroupChangedEvent $event)
     {
-        /** @var \pocketmine\IPlayer $player */
+        /** @var IPlayer $player */
         $player = $event->getPlayer();
 		
 		if($player instanceof Player)
 		{
-			$levelName = $this->plugin->getConfig()->get("enable-multiworld-chat") ? $player->getLevel()->getName() : null;
+			$levelName = $this->plugin->getConfig()->get("enable-multiworld-chat") ? $player->getWorld()->getDisplayName() : null;
 
 			$nameTag = $this->plugin->getNametag($player, $levelName);
 
@@ -56,9 +57,9 @@ class PCListener implements Listener
      */
     public function onPlayerJoin(PlayerJoinEvent $event)
     {
-        /** @var \pocketmine\Player $player */
+        /** @var Player $player */
         $player = $event->getPlayer();
-        $levelName = $this->plugin->getConfig()->get("enable-multiworld-chat") ? $player->getLevel()->getName() : null;
+        $levelName = $this->plugin->getConfig()->get("enable-multiworld-chat") ? $player->getWorld()->getDisplayName() : null;
 
         $nameTag = $this->plugin->getNametag($player, $levelName);
 
@@ -75,7 +76,7 @@ class PCListener implements Listener
 		$player = $event->getPlayer();
         $message = $event->getMessage();
 
-        $levelName = $this->plugin->getConfig()->get("enable-multiworld-chat") ? $player->getLevel()->getName() : null;
+        $levelName = $this->plugin->getConfig()->get("enable-multiworld-chat") ? $player->getWorld()->getDisplayName() : null;
 
         $chatFormat = $this->plugin->getChatFormat($player, $message, $levelName);
 
