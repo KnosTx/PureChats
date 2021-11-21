@@ -97,7 +97,6 @@ class PureChat extends PluginBase
 
                 if($args[1] !== "null" and $args[1] !== "global")
                 {
-                    /** @var World $level */
                     $level = $this->getServer()->getWorldManager()->getWorldByName($args[1]);
 
                     if ($level === null) {
