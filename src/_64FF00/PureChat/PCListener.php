@@ -34,7 +34,7 @@ class PCListener implements Listener
         $this->plugin = $plugin;
     }
 
-    public function onGroupChanged(PPGroupChangedEvent $event)
+    public function onGroupChanged(PPRankChangedEvent $event)
     {
         /** @var IPlayer $player */
         $player = $event->getPlayer();
