@@ -96,6 +96,48 @@ class PureChat extends PluginBase
                 $sender->sendMessage(TextFormat::GREEN . self::MAIN_PREFIX . " You set the chat format of the group to " . $chatFormat . ".");
                 break;
 
+            case "setnametag":
+
+                if(count($args) < 3)
+                {
+                    $sender->sendMessage(TextFormat::GREEN . self::MAIN_PREFIX . " Usage: /setnametag <group> <world> <format>");
+
+                    return true;
+                }
+
+                $group = $this->purePerms->getGroup($args[0]);
+
+                if($group === null)
+                {
+                    $sender->sendMessage(TextFormat::RED . self::MAIN_PREFIX . " Group " . $args[0] . "does NOT exist.");
+
+                    return true;
+                }
+
+                $levelName = null;
+
+                if($args[1] !== "null" and $args[1] !== "global")
+                {
+                    /** @var World $level */
+                    $level = $this->getServer()->getWorldManager()->getWorldByName($args[1]);
+
+                    if ($level === null) {
+                        $sender->sendMessage(TextFormat::RED . self::MAIN_PREFIX . " Invalid World Name!");
+
+                        return true;
+                    }
+
+                    $levelName = $level->getFolderName();
+                }
+
+                $nameTag = implode(" ", array_slice($args, 2));
+
+                $this->setOriginalNametag($group, $nameTag, $levelName);
+
+                $sender->sendMessage(TextFormat::GREEN . self::MAIN_PREFIX . " You set the nametag of the group to " . $nameTag . ".");
+
+            break;
+
             case "setprefix":
 
                 if(!$sender instanceof Player)
