@@ -2,7 +2,7 @@
 
 namespace _64FF00\PureChat;
 
-use _64FF00\PurePerms\EventManager\PPRankChangedEvent;
+use _64FF00\PurePerms\event\PPGroupChangedEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\event\player\PlayerJoinEvent;
@@ -34,7 +34,7 @@ class PCListener implements Listener
         $this->plugin = $plugin;
     }
 
-    public function onGroupChanged(PPRankChangedEvent $event)
+    public function onGroupChanged(PPGroupChangedEvent $event)
     {
         /** @var IPlayer $player */
         $player = $event->getPlayer();
