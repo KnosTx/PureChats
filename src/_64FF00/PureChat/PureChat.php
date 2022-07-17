@@ -9,11 +9,14 @@ use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
+use pocketmine\utils\SingletonTrait;
 use pocketmine\utils\TextFormat;
 use pocketmine\world\World;
 
 class PureChat extends PluginBase
 {
+
+    use SingletonTrait;
     /*
         PureChat by 64FF00 (Twitter: @64FF00)
 
@@ -43,6 +46,7 @@ class PureChat extends PluginBase
             $this->config->set("version", $version);
             $this->fixOldConfig();
         }
+        $this->setInstance($this);
 
         $purePerms = $this->getServer()->getPluginManager()->getPlugin("PurePerms");
         assert($purePerms instanceof PurePerms);
