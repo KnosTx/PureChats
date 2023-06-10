@@ -26,45 +26,7 @@ class ChatFormat implements ChatFormatter
         return $msg;
     }
 
-    public function getNametag(Player $player, ?string $WorldName = null): string
-    {
-        $originalNametag = $this->getOriginalNametag($player, $WorldName);
-        $nameTag = $this->applyColors($originalNametag);
-        $nameTag = $this->applyPCTags($nameTag, $player, null, $WorldName);
-        return $nameTag;
-    }
 
-
-
-    public function getOriginalNametag(Player $player, ?string $WorldName = null): string
-    {
-        /** @var \_64FF00\PurePerms\PPGroup $group */
-        $group = $this->PureChat->getPurePerms()->getUserDataMgr()->getGroup($player, $WorldName);
-        if($WorldName === null)
-        {
-            $originalNametag = $this->PureChat->getthisConfig()->getNested("groups." . $group->getName() . ".nametag");
-            if(!is_string($originalNametag))
-            {
-                $this->getLogger()->critical("Invalid nametag found in config.yml (Group: " . $group->getName() . ") / Setting it to default value.");
-                $this->PureChat->getthisConfig()->setNested("groups." . $group->getName() . ".nametag", $originalNametag = "&8&l[" . $group->getName() . "]&f&r {display_name}");
-                $this->PureChat->getthisConfig()->save();
-                $this->PureChat->getthisConfig()->reload();
-            }
-            return $originalNametag;
-        }
-        else
-        {
-            $originalNametag = $this->PureChat->getthisConfig()->getNested("groups." . $group->getName() . "worlds.$WorldName.nametag");
-            if(!is_string(($originalNametag)))
-            {
-                $this->getLogger()->critical("Invalid nametag found in config.yml (Group: " . $group->getName() . ", WorldName = $WorldName) / Setting it to default value.");
-                $this->PureChat->getthisConfig()->setNested("groups." . $group->getName() . "worlds.$WorldName.nametag", $originalNametag = "&8&l[" . $group->getName() . "]&f&r {display_name}");
-                $this->PureChat->getthisConfig()->save();
-                $this->PureChat->getthisConfig()->reload();
-            }
-            return $originalNametag;
-        }
-    }
 
     public function getPrefix(Player $player, ?string $WorldName = null): string
     {
@@ -99,67 +61,6 @@ class ChatFormat implements ChatFormatter
         }
     }
 
-    public function setOriginalChatFormat(PPGroup $group, string $chatFormat, ?string $WorldName = null): bool
-    {
-        if($WorldName === null)
-        {
-            $this->PureChat->getthisConfig()->setNested("groups." . $group->getName() . ".chat", $chatFormat);
-        }
-        else
-        {
-            $this->PureChat->getthisConfig()->setNested("groups." . $group->getName() . "worlds.$WorldName.chat", $chatFormat);
-        }
-        $this->PureChat->getthisConfig()->save();
-        $this->PureChat->getthisConfig()->reload();
-        return true;
-    }
-
-    public function setOriginalNametag(PPGroup $group, string $nameTag, ?string $WorldName = null): bool
-    {
-        if($WorldName === null)
-        {
-            $this->PureChat->getthisConfig()->setNested("groups." . $group->getName() . ".nametag", $nameTag);
-        }
-        else
-        {
-            $this->PureChat->getthisConfig()->setNested("groups." . $group->getName() . "worlds.$WorldName.nametag", $nameTag);
-        }
-        $this->PureChat->getthisConfig()->save();
-        $this->PureChat->getthisConfig()->reload();
-        return true;
-    }
-
-    public function setPrefix(string $prefix, Player $player, ?string $WorldName = null): bool
-    {
-        if($WorldName === null)
-        {
-            $this->PureChat->getPurePerms()->getUserDataMgr()->setNode($player, "prefix", $prefix);
-        }
-        else
-        {
-            $worldData = $this->PureChat->getPurePerms()->getUserDataMgr()->getWorldData($player, $WorldName);
-            $worldData["prefix"] = $prefix;
-            $this->PureChat->getPurePerms()->getUserDataMgr()->setWorldData($player, $WorldName, $worldData);
-        }
-
-        return true;
-    }
-
-    public function setSuffix(string $suffix, Player $player, ?string $WorldName = null): bool
-    {
-        if($WorldName === null)
-        {
-            $this->PureChat->getPurePerms()->getUserDataMgr()->setNode($player, "suffix", $suffix);
-        }
-        else
-        {
-            $worldData = $this->PureChat->getPurePerms()->getUserDataMgr()->getWorldData($player, $WorldName);
-            $worldData["suffix"] = $suffix;
-            $this->PureChat->getPurePerms()->getUserDataMgr()->setWorldData($player, $WorldName, $worldData);
-        }
-
-        return true;
-    }
 
     public function stripColors(string $string): string
     {
