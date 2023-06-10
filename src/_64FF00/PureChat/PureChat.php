@@ -32,6 +32,13 @@ class PureChat extends PluginBase
     private Config $config;
 
     private PurePerms $purePerms;
+    public function getPurePerms(){
+        return $this->purePerms;
+    }
+    public function getthisConfig(){
+        return $this->config;
+    }
+
 
     public function onLoad(): void
     {
@@ -234,42 +241,8 @@ class PureChat extends PluginBase
           888  888   d88P     888 888       8888888
     */
 
-    public function applyColors(string $string): string
-    {
-        return TextFormat::colorize($string);
-    }
 
-    public function applyPCTags(string $string, Player $player, ?string $message, ?string $WorldName): string
-    {
-        // TODO
-        $string = str_replace("{display_name}", $player->getDisplayName(), $string);
-        if($message === null)
-            $message = "";
-        if($player->hasPermission("pchat.coloredMessages"))
-        {
-            $string = str_replace("{msg}", $this->applyColors($message), $string);
-        }
-        else
-        {
-            $string = str_replace("{msg}", $this->stripColors($message), $string);
-        }
-        {
-            $string = str_replace("{fac_name}", '', $string);
-            $string = str_replace("{fac_rank}", '', $string);
-        }
-        $string = str_replace("{world}", ($WorldName === null ? "" : $WorldName), $string);
-        $string = str_replace("{prefix}", $this->getPrefix($player, $WorldName), $string);
-        $string = str_replace("{suffix}", $this->getSuffix($player, $WorldName), $string);
-        return $string;
-    }
 
-    public function getChatFormat(Player $player, ?string $message, ?string $WorldName = null): string
-    {
-        $originalChatFormat = $this->getOriginalChatFormat($player, $WorldName);
-        $chatFormat = $this->applyColors($originalChatFormat);
-        $chatFormat = $this->applyPCTags($chatFormat, $player, $message, $WorldName);
-        return $chatFormat;
-    }
 
     public function getNametag(Player $player, ?string $WorldName = null): string
     {
@@ -279,37 +252,7 @@ class PureChat extends PluginBase
         return $nameTag;
     }
 
-    public function getOriginalChatFormat(Player $player, ?string $WorldName = null): string
-    {
-        /** @var \_64FF00\PurePerms\PPGroup $group */
-        $group = $this->purePerms->getUserDataMgr()->getGroup($player, $WorldName);
-        if($WorldName === null)
-        {
-        	$originalChatFormat = $this->config->getNested("groups." . $group->getName() . ".chat");
-            if(!is_string($originalChatFormat))
-            {
-                $this->getLogger()->critical("Invalid chat format found in config.yml (Group: " . $group->getName() . ") / Setting it to default value.");
-                $this->config->setNested("groups." . $group->getName() . ".chat", $originalChatFormat = "&8&l[" . $group->getName() . "]&f&r {display_name} &7> {msg}");
-                $this->config->save();
-                $this->config->reload();
-            }
 
-            return $originalChatFormat;
-        }
-        else
-        {
-        	$originalChatFormat = $this->config->getNested("groups." . $group->getName() . "worlds.$WorldName.chat");
-            if(!is_string($originalChatFormat))
-            {
-                $this->getLogger()->critical("Invalid chat format found in config.yml (Group: " . $group->getName() . ", WorldName = $WorldName) / Setting it to default value.");
-                $this->config->setNested("groups." . $group->getName() . "worlds.$WorldName.chat", $originalChatFormat = "&8&l[" . $group->getName() . "]&f&r {display_name} &7> {msg}");
-                $this->config->save();
-                $this->config->reload();
-            }
-
-            return $originalChatFormat;
-        }
-    }
 
     public function getOriginalNametag(Player $player, ?string $WorldName = null): string
     {
@@ -440,4 +383,73 @@ class PureChat extends PluginBase
     {
         return TextFormat::clean($string);
     }
+
+    public function applyColors(string $string): string
+    {
+        return TextFormat::colorize($string);
+    }
+
+    public function applyPCTags(string $string, Player $player, ?string $message, ?string $WorldName): string
+    {
+        // TODO
+        $string = str_replace("{display_name}", $player->getDisplayName(), $string);
+        if($message === null)
+            $message = "";
+        if($player->hasPermission("pchat.coloredMessages"))
+        {
+            $string = str_replace("{msg}", $this->applyColors($message), $string);
+        }
+        else
+        {
+            $string = str_replace("{msg}", $this->stripColors($message), $string);
+        }
+        {
+            $string = str_replace("{fac_name}", '', $string);
+            $string = str_replace("{fac_rank}", '', $string);
+        }
+        $string = str_replace("{world}", ($WorldName === null ? "" : $WorldName), $string);
+        $string = str_replace("{prefix}", $this->getPrefix($player, $WorldName), $string);
+        $string = str_replace("{suffix}", $this->getSuffix($player, $WorldName), $string);
+        return $string;
+    }
+    public function getChatFormat(Player $player, ?string $message, ?string $WorldName = null): string
+    {
+        $originalChatFormat = $this->getOriginalChatFormat($player, $WorldName);
+        $chatFormat = $this->applyColors($originalChatFormat);
+        $chatFormat = $this->applyPCTags($chatFormat, $player, $message, $WorldName);
+        return $chatFormat;
+    }
+    public function getOriginalChatFormat(Player $player, ?string $WorldName = null): string
+    {
+        /** @var \_64FF00\PurePerms\PPGroup $group */
+        $group = $this->purePerms->getUserDataMgr()->getGroup($player, $WorldName);
+        if($WorldName === null)
+        {
+            $originalChatFormat = $this->config->getNested("groups." . $group->getName() . ".chat");
+            if(!is_string($originalChatFormat))
+            {
+                $this->getLogger()->critical("Invalid chat format found in config.yml (Group: " . $group->getName() . ") / Setting it to default value.");
+                $this->config->setNested("groups." . $group->getName() . ".chat", $originalChatFormat = "&8&l[" . $group->getName() . "]&f&r {display_name} &7> {msg}");
+                $this->config->save();
+                $this->config->reload();
+            }
+
+            return $originalChatFormat;
+        }
+        else
+        {
+            $originalChatFormat = $this->config->getNested("groups." . $group->getName() . "worlds.$WorldName.chat");
+            if(!is_string($originalChatFormat))
+            {
+                $this->getLogger()->critical("Invalid chat format found in config.yml (Group: " . $group->getName() . ", WorldName = $WorldName) / Setting it to default value.");
+                $this->config->setNested("groups." . $group->getName() . "worlds.$WorldName.chat", $originalChatFormat = "&8&l[" . $group->getName() . "]&f&r {display_name} &7> {msg}");
+                $this->config->save();
+                $this->config->reload();
+            }
+
+            return $originalChatFormat;
+        }
+    }
+
+
 }
